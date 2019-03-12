@@ -1,0 +1,63 @@
+---
+title: "Creating a full factorial design"
+author: "Mario R Carrillo"
+date: "3/10/2019"
+output: html_document
+---
+
+# Creating choice sets using Algorithm design
+
+The goal of this analysis is to determine the number of questions that the respondents will be answered in our survey.  
+
+First, I created a choice set using the generation factorial algorithm. The full design with four four-level factors (Hfree label, AniWell label, Orga label, and Small label) and one therre-level factor (price attribute). 
+
+Also, the milk choices that the respondent will have to choose from are conventional milk, organic milk, non-organic grazing milk, vegetable milk. Where each type of milk is expressed by five attributes: Hormone-free (Hfree), Animal welfare certification (AniWell), Organic Certified (Orga), Small farms (Small), and three milk market prices for each kind of milk (price). 
+ 
+
+```{r setup, include=FALSE}
+library(AlgDesign)
+ffd<- gen.factorial(c(2,2,2,2,3), varNames = c("Hfree", "AniWell", "Orga", "Small", "Price"), factors="all")
+ffd
+
+```
+
+The full factorial design consist of forty-eight rows. Then I created a half-fractional factorial design where the number of rows of the full factorial will reduce from forty-eight to twenty-four. 
+
+After this, I created the choice sets by using random selection without replacement, this selection is repeated until all rows in each milk choice sets of the fractional factorial design are assigned to the total choice sets.  
+
+
+```{r cars, echo=FALSE}
+set.seed(123099)
+des <-optFederov(~.,ffd,24)
+
+alt1<-des$design
+
+
+alt1r<- transform(alt1, r1=runif(24))
+
+alt2<-alt1
+alt2r<- transform(alt2, r2=runif(24))
+
+alt3<-alt1
+alt3r<- transform(alt3, r3=runif(24))
+
+alt4<-alt1
+alt4r<- transform(alt4, r4=runif(24))
+
+alt1_sort<-alt1r[order(alt1r$r1), ]
+alt1_sort
+
+alt2_sort<-alt2r[order(alt2r$r2), ]
+alt2_sort
+
+alt3_sort<-alt3r[order(alt3r$r3), ]
+alt3_sort
+
+alt4_sort<-alt4r[order(alt4r$r4), ]
+alt4_sort
+```
+
+After this, I created the choice sets by using random selection without replacement, this selection is repeated until all rows in each milk choice sets of the fractional factorial design are assigned to the total choice sets.
+
+
+
